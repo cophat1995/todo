@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<body>
+
+<div ng-cloak="" ng-app="MyApp">
+<form class="form-horizontal" ng-controller="MyCtrl">
+    <div ng-repeat="(name, section) in configs">
+        <label ng-bind="name"></label>
+        <input class="form-control" ng-model="formData.settings[$index].value" ng-change="change(name, $index)">
+        <select class="form-control" ng-model="formData.settings[$index].value" ng-change="change(name, $index)">
+            <option value="" disabled="disabled">---Please Select Option---</option>
+            <option ng-repeat="item in section" value="{{item.value}}" ng-bind="item.value">
+            {{item.value}}
+            </option>
+        </select>
+    </div>
+    <div class="col-md-12" ng-include="gametemp"></div>
+    <div class="row">
+        <div class="hr-line-dashed"></div>
+        <div class="text-center col-md-12 padding-15">
+            <button class="btn btn-primary btn-lg" ng-click="saveSetting()" formnovalidate translate>
+                <i class='fa fa-circle-o-notch fa-spin' ng-if="showBusy"></i>&nbsp;Save
+            </button>
+        </div>
+    </div>
+    <div>
+    {{formData.settings}}
+    </div>
+</form>
+</div>
+<script>
+
+var app = angular.module('MyApp', []);
+
+app.controller("MyCtrl", function($scope){
+    $scope.formData = {
+        settings:[]
+    };
+
+    $scope.configs = {
+        'Label1': [{ value: 11 }, { value: 12 }],
+        'Label2': [{ value: 21 }, { value: 22 }]
+    };
+    
+    $scope.change = function(name, idx) {
+        $scope.formData.settings[idx].name = name;
+        console.log(name);
+    };
+})
+</script>
+</body>
+</html>
+
